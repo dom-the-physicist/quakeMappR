@@ -2,5 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
-.pdf
-.Rproj
+test_instructions.pdf
+quakeMapper.Rproj
+.DS_Store
+rsconnect/

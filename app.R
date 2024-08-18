@@ -5,6 +5,7 @@
 # Loading in the required libraries to run the shiny app
 library(shiny)
 library(tidyverse)
+library(maps)
 library(ggplot2)
 library(lubridate)
 library(leaflet)
