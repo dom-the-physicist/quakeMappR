@@ -23,5 +23,6 @@ Package requirements to run this shiny tool and their versions at the time of de
 - ggplot2 (version 3.5.1)
 - lubridate (version 1.9.3)
 - leaflet (version 2.2.2)
+- shinyjs (version 2.1.0)
 
 
