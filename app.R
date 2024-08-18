@@ -9,6 +9,7 @@ library(maps)
 library(ggplot2)
 library(lubridate)
 library(leaflet)
+library(shinyjs)
 
 
 # Loading in the required data prior to starting the shiny app
@@ -29,9 +30,11 @@ ui <- fluidPage(
   # Sidebar with a slider input used for determining the date range of interest 
   sidebarLayout(
     sidebarPanel(
+      shinyjs::useShinyjs(),
+      p("Please select a time period you would like to examine:"),
       sliderInput(
         inputId = "date_range",
-        label = "Select a date range:",
+        label = "Time range:",
         min = min(earthquakes$time), # Locating the minimum date in the earthquake dataset  
         max = max(earthquakes$time), # Locating the maximum date in the earthquake dataset
         value = c(min(earthquakes$time), max(earthquakes$time)),  # Set inital range of dates upon shiny app startup
@@ -43,11 +46,12 @@ ui <- fluidPage(
     # Main panel ui segments consisting of three different plots
     mainPanel(
       # Heading for the main panel just to make it look a bit nice
-      h2("Map of all Eearthquakes"),
+      shinyjs::hidden(div(id="heading",h2("Eearthquakes in selected time period"))),
       fluidRow(
         column(6, plotOutput("hist")),   # Histogram plot of earthquake counts per month in the selected date range  
         column(6, plotOutput(outputId = "map")), # World map plot with all the earthquake spots in the selected date range
       ),
+      shinyjs::hidden(div(id="heading2",h3("Interactive map"))),
       leafletOutput("mymap",height = 800)
     )
   )
@@ -61,7 +65,8 @@ server <- function(input, output) {
   
   # Observe event that activates each time the action button labeled "Select time period" is pressed
   observeEvent(input$select,{
-    
+    shinyjs::show(id = "heading")
+    shinyjs::show(id = "heading2")
     # Filter the earthquake dataset to be in the user selected data range
     earthquakes2 <- earthquakes[earthquakes$time >= input$date_range[1] & earthquakes$time <= input$date_range[2], ]
     
@@ -84,7 +89,7 @@ server <- function(input, output) {
     output$map <- renderPlot({p})
     
     # Rendering the histogram based on the filtered data from the user selected date range
-    output$hist <- renderPlot({hist(earthquakes2$time,breaks = "months",xlab = "Months",freq = TRUE)})
+    output$hist <- renderPlot({hist(earthquakes2$time,breaks = "months",xlab = "Months",main = "Number of earthquakes per month",,freq = TRUE)})
     
     
     ########## Creating an interactive map using leaflet package. #################
@@ -94,7 +99,7 @@ server <- function(input, output) {
                  popup = (paste("Place: ", earthquakes2$place, "<br>", 
                                 "Id: ", earthquakes2$id, "<br>",
                                 "Time: ", earthquakes2$time, "<br>",
-                                "Magnitude: ", earthquakes2$mag, " m <br>",
+                                "Magnitude: ", earthquakes2$mag, " <br>",
                                 "Depth: ", earthquakes2$depth)),
                  clusterOptions = markerClusterOptions())
     
