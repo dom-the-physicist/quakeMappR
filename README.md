@@ -15,6 +15,8 @@ The app itself loads a data file that contains information about Earthquakes in 
 
 The shiny app is currently deployed on the following url: https://dom-vugrinec.shinyapps.io/quakemappr/
 
+![alt text](https://github.com/[dom-the-physicist]/[quakeMappR]/blob/[main]/quakeMappR.jpeg?raw=true)
+
 Package requirements to run this shiny tool and their versions at the time of development:
 
 - shiny (version 1.8.1.1)
